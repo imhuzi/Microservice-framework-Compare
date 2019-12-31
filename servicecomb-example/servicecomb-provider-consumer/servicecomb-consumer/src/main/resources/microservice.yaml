@@ -1,0 +1,15 @@
+APPLICATION_ID: servicecomb
+service_description:
+  name: consumer
+  version: 0.0.1
+  environment: development
+servicecomb:
+  service:
+    registry:
+      address: http://127.0.0.1:30100
+  isolation:
+    Consumer:
+      enabled: false
+  references:
+    myProvider:
+      version-rule: 0.0.1

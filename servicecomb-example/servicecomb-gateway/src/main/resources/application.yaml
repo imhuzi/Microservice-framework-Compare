@@ -1,0 +1,15 @@
+zuul:
+  routes:
+    calculator: /servicecomb/**
+
+# disable netflix eurkea since it's not used for service discovery
+ribbon:
+  eureka:
+    enabled: false
+
+server:
+  port: 8889
+
+servicecomb:
+  tracing:
+    enabled: false
