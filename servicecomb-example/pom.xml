@@ -2,14 +2,51 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <artifactId>Microservice-framework-Compare</artifactId>
         <groupId>com.uyibai.demo</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>servicecomb-example</artifactId>
+    <groupId>com.uyibai.demo</groupId>
+    <name>servicecomb-example</name>
+    <description>Quick Start Registered Found Demo for Using ServiceComb</description>
+    <packaging>pom</packaging>
 
+    <modules>
+        <!-- 公共接口定义 -->
+        <module>servicecomb-common-schema</module>
+        <!-- 公共网关服务 -->
+        <module>servicecomb-gateway</module>
+        <!--服务调用Demo-->
+        <module>servicecomb-provider-consumer</module>
+    </modules>
+
+    <properties>
+        <java-chassis.version>1.3.0</java-chassis.version>
+        <common-schema.version>1.0-SNAPSHOT</common-schema.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.servicecomb</groupId>
+                <artifactId>java-chassis-dependencies-springboot1</artifactId>
+                <version>${java-chassis.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.uyibai.demo</groupId>
+                <artifactId>servicecomb-common-schema</artifactId>
+                <version>${common-schema.version}</version>
+                <scope>compile</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>
