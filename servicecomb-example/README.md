@@ -35,10 +35,9 @@ docker ps | grep service-center
 > 注意：官方事例[体质指数计算器](https://github.com/apache/servicecomb-samples/tree/1.3.0/java-chassis-samples/bmi)在分支1.3.0上
 
 ##### 3. 事例demo
-1. [服务调用 - servicecomb-provider-consumer](./servicecomb-provider-consumer/README.md)
-2. 负载均衡 - 横向扩展
-3. 流量控制 - 避免微服务过载运行
-4. 服务治理 - 解决或缓解服务雪崩
-5. 分布式调用链追踪 - 监控微服务的网络延时并可视化微服务中的数据流转
-
-
+* [服务调用 - servicecomb-provider-consumer](./servicecomb-provider-consumer/README.md)
+* [通过网关调用服务 - servicecomb-gateway](./servicecomb-gateway/README.md)
+* [负载均衡 - 横向扩展 - servicecomb-load-balance](./servicecomb-load-balance/README.md)
+* [流量控制 - 避免微服务过载运行 - servicecomb-qps-flowcontrol](./servicecomb-qps-flowcontrol/README.md)
+* [服务治理 - 解决或缓解服务雪崩 - servicecomb-isolation](./servicecomb-isolation/README.md)
+* 分布式调用链追踪 - 监控微服务的网络延时并可视化微服务中的数据流转

@@ -6,7 +6,7 @@ package com.uyibai.common.simple.register;
  * @Description:
  * 为servicecomb-registered-found项目提供接口
  **/
-public interface ICallSchema {
+public interface ISimpleCallSchema {
 
 
     String sayHi(String name);

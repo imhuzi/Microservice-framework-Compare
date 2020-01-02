@@ -1,6 +1,6 @@
 package com.uyibai.simple;
 
-import com.uyibai.common.simple.register.ICallSchema;
+import com.uyibai.common.simple.register.ISimpleCallSchema;
 import com.uyibai.common.simple.register.Person;
 import org.apache.servicecomb.foundation.common.utils.BeanUtils;
 import org.apache.servicecomb.provider.pojo.RpcReference;
@@ -16,13 +16,13 @@ import org.springframework.stereotype.Component;
 public class ConsumerApplication {
 
     @RpcReference(microserviceName = "myProvider", schemaId = "SpringmvcHello")
-    private static ICallSchema springmvcHello;
+    private static ISimpleCallSchema springmvcHello;
 
     @RpcReference(microserviceName = "myProvider", schemaId = "JaxrsHello")
-    private static ICallSchema jaxrsHello;
+    private static ISimpleCallSchema jaxrsHello;
 
     @RpcReference(microserviceName = "myProvider", schemaId = "PojoHello")
-    private static ICallSchema pojoHello;
+    private static ISimpleCallSchema pojoHello;
 
 
     public static void main(String[] args) {

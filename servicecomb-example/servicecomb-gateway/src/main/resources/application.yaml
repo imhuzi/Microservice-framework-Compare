@@ -1,6 +1,8 @@
 zuul:
   routes:
-    calculator: /servicecomb/**
+    myConsumer: /myConsumer/**
+    flowControlProvider: /flowControlProvider/**
+    isolationProvider: /isolationProvider/**
 
 # disable netflix eurkea since it's not used for service discovery
 ribbon:

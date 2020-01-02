@@ -1,21 +1,12 @@
 APPLICATION_ID: servicecomb
 service_description:
-  name: myConsumer
+  name: loadBalanceConsumer
   version: 0.0.1
   environment: development
 servicecomb:
   service:
     registry:
       address: http://127.0.0.1:30100
-  rest:
-    address: 0.0.0.0:7777
-  isolation:
-    Consumer:
-      enabled: false
   references:
-    myProvider:
+    loadBalanceProvider:  # 需要根据服务提供者的服务名称进行修改
       version-rule: 0.0.1
-  handler:
-    chain:
-      Provider:
-        default: bizkeeper-provider
