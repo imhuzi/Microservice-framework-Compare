@@ -14,22 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.uyibai.simple.provider;
+package com.uyibai.simple.isolation;
 
-import com.uyibai.common.simple.register.ISimpleCallSchema;
-import com.uyibai.common.simple.register.Person;
-import org.apache.servicecomb.provider.pojo.RpcSchema;
+import com.uyibai.common.simple.register.IFlowControlCallSchema;
+import org.apache.servicecomb.provider.rest.common.RestSchema;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@RpcSchema(schemaId = "PojoHello")
-public class PojoHello implements ISimpleCallSchema {
+@RestSchema(schemaId = "RestSchemaId")
+@RequestMapping("/")
+public class FlowControlCallSchema implements IFlowControlCallSchema {
 
-  @Override
-  public String sayHi(String name) {
-    return "Pojo Hello " + name;
-  }
-
-  @Override
-  public String sayHello(Person person) {
-    return "Pojo Hello person " + person.getName();
-  }
+    @GetMapping(path = "/gateway")
+    @Override
+    public String callFlowControl() {
+        return "FlowControlCallSchemaId";
+    }
 }

@@ -1,9 +1,6 @@
-
-# all interconnected microservices must belong to an application wth the same ID
 APPLICATION_ID: servicecomb
 service_description:
-# name of the declaring microservice
-  name: gateway
+  name: loadBalanceProvider
   version: 0.0.1
   environment: development
 servicecomb:

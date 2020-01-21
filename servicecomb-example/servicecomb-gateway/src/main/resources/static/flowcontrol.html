@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Call Gateway Servicecomb qps flowcontrol Server</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div style="display: flex;justify-content: center;align-items: center;">
+    <button id="call">Call Gateway Servicecomb qps flowcontrol Server</button>
+    <div id="result"></div>
+</div>
+</body>
+<script>
+    $("#call").click(function () {
+        $('#result').html("")
+        $.ajax({
+          url: "/flowControlProvider/gateway",
+          type: "GET",
+          success: function (data) {
+            $("#result").append(data);
+          },
+          error : function(e) {
+            alert("出错");
+            alert(e.responseText);
+          },
+        });
+      });
+
+</script>
+</html>

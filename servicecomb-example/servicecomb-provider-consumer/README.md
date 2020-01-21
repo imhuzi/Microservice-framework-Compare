@@ -2,10 +2,11 @@
 
 #### 项目目录结构
 
+```
 |- servicecomb-provider-consumer  # servicecomb 注册发现demo
 |--- servicecomb-consumer        # 调用register中所提供的接口
 |--- servicecomb-provider        # 提供接口为consumer调用
-
+```
 
 ##### 服务提供者提供的服务契约有两种形式
 - 放置在"resources/microservices"或者"resources/application"目录的契约文件(替代服务中心)
@@ -16,41 +17,41 @@
 ##### 1. 服务的父工程中添加自己创建的[servicecomb-common-schema的依赖](../pom.xml)，为服务调用提供接口依赖
 
 ##### 2. 新建servicecomb-provider项目，并添加servicecomb相关依赖，pom文件为
-```xml
-        <!-- 该依赖为父级项目maven依赖 -->
-        <dependency>
-            <groupId>com.uyibai.demo</groupId>
-            <artifactId>servicecomb-common-schema</artifactId>
-        </dependency>
+```
+<!-- 该依赖为父级项目maven依赖 -->
+<dependency>
+    <groupId>com.uyibai.demo</groupId>
+    <artifactId>servicecomb-common-schema</artifactId>
+</dependency>
 
-        <dependency>
-            <groupId>org.apache.servicecomb</groupId>
-            <artifactId>provider-pojo</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicecomb</groupId>
-            <artifactId>provider-springmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicecomb</groupId>
-            <artifactId>transport-highway</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicecomb</groupId>
-            <artifactId>transport-rest-vertx</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-        </dependency>
+<dependency>
+    <groupId>org.apache.servicecomb</groupId>
+    <artifactId>provider-pojo</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.servicecomb</groupId>
+    <artifactId>provider-springmvc</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.servicecomb</groupId>
+    <artifactId>transport-highway</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.servicecomb</groupId>
+    <artifactId>transport-rest-vertx</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-slf4j-impl</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+</dependency>
 ```
 ##### 3. 处理[log4j](src/main/resources/log4j2.xml)配置文件
 
@@ -229,4 +230,178 @@ Jaxrs Hello  jaxrs
 Jaxrs Hello person LiYang
 Pojo Hello pojo
 Pojo Hello person LiYang
+```
+
+#### 3.编写一个简单的网关服务调用服务提供者所提供的接口，并将返回的内容填充在网关服务的html页面中
+
+##### 1. 为服务消费方添加一个可以被网关服务调用的Rest接口,返回调用的服务提供者所提供的接口返回的内容
+```java
+@RestSchema(schemaId = "RestSchemaId")
+@RequestMapping("/")
+public class GatewayCallDemo {
+
+    @RpcReference(microserviceName = "myProvider", schemaId = "SpringmvcHello")
+    private static ICallSchema springmvcHello;
+
+    @RpcReference(microserviceName = "myProvider", schemaId = "JaxrsHello")
+    private static ICallSchema jaxrsHello;
+
+    @RpcReference(microserviceName = "myProvider", schemaId = "PojoHello")
+    private static ICallSchema pojoHello;
+
+    @GetMapping(path = "/gateway")
+    public HashMap<String, Object> testCall() {
+
+        Person person = new Person();
+        person.setName("LiYang");
+
+        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+
+        hashMap.put("springmvc-sayHi", springmvcHello.sayHi(" springmvc"));
+        hashMap.put("springmvc-sayHello", springmvcHello.sayHello(person));
+
+        hashMap.put("jaxrs-sayHi", jaxrsHello.sayHi(" jaxrs"));
+        hashMap.put("jaxrs-sayHello", jaxrsHello.sayHello(person));
+
+        hashMap.put("pojo-sayHi", pojoHello.sayHi(" pojo"));
+        hashMap.put("pojo-sayHello", pojoHello.sayHello(person));
+
+        return hashMap;
+    }
+}
+
+```
+##### 2. 提供接口之后需要为servicecomb-consumer项目配置一个可以被服务访问的端口
+```yaml
+rest:
+    address: 0.0.0.0:7777
+```
+
+##### 3.新建一个[网关服务](../servicecomb-gateway/README.md)
+
+##### 4.网关服务中处理pom文件与新建Springboot配置文件与Servicecomb的配置文件
+
+```
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+</dependency>
+<!--add rest transport-->
+<dependency>
+    <groupId>org.apache.servicecomb</groupId>
+    <artifactId>transport-rest-vertx</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.servicecomb</groupId>
+    <artifactId>spring-boot-starter-servicecomb</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.servicecomb</groupId>
+    <artifactId>spring-boot-starter-discovery</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.servicecomb</groupId>
+    <artifactId>spring-cloud-zuul</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.apache.servicecomb</groupId>
+    <artifactId>spring-cloud-zuul-zipkin</artifactId>
+</dependency>
+```
+
+```yaml
+# application.yaml
+zuul:
+  routes:
+    myConsumer: /myConsumer/**  # zuul.routes.${serviceName} 为网关服务需要调用的服务名称，配置在【servicecomb-consumer/resources/】中的name属性
+
+# disable netflix eurkea since it's not used for service discovery
+ribbon:
+  eureka:
+    enabled: false
+
+server:
+  port: 8889
+
+servicecomb:
+  tracing:
+    enabled: false
+```
+
+```yaml
+# microservice.yaml
+# all interconnected microservices must belong to an application wth the same ID
+APPLICATION_ID: servicecomb
+service_description:
+# name of the declaring microservice
+  name: gateway
+  version: 0.0.1
+  environment: development
+servicecomb:
+  service:
+    registry:
+      address: http://127.0.0.1:30100
+
+```
+
+##### 5. 编写网关服务启动类
+```java
+
+@SpringBootApplication
+@EnableZuulProxy
+@EnableServiceComb
+public class GatewayApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
+}
+
+```
+
+##### 6. 编写一个简单的html页面，点击按钮调用服务提供者所提供的接口
+> 其中接口 "/myConsumer/gateway" 中的【myConsumer】为服务消费方的服务名称，同时也是application.yaml文件中的zuul.routes.${serviceName}
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Call Gateway Servicecomb Provider Server</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div style="display: flex;justify-content: center;align-items: center;">
+    <button id="call">Call Gateway Servicecomb Provider Server</button>
+    <div id="result"></div>
+</div>
+</body>
+<script>
+    $("#call").click(function () {
+        $('#result').html("")
+        $.ajax({
+          url: "/myConsumer/gateway",
+          type: "GET",
+          success: function (data) {
+            Object.keys(data).forEach(function(key){
+                $("#result").append("<div>【"+key+"】 = 【" + data[key] + "】</div>");
+            });
+          },
+        });
+      });
+
+</script>
+</html>
+
+```
+
+
+##### 7. 启动网关服务、启动服务提供者服务、启动服务消费服务
+> 进入页面后点击按钮，服务调用成功后会讲以下内容填充至页面
+
+```
+【jaxrs-sayHello】 = 【Jaxrs Hello person LiYang】
+【springmvc-sayHello】 = 【Spring mvc Hello person LiYang】
+【jaxrs-sayHi】 = 【Jaxrs Hello jaxrs】
+【pojo-sayHi】 = 【Pojo Hello pojo】
+【springmvc-sayHi】 = 【Spring mvc Hello springmvc】
+【pojo-sayHello】 = 【Pojo Hello person LiYang】
 ```

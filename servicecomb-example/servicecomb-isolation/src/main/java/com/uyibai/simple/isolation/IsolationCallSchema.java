@@ -14,22 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.uyibai.simple.provider;
+package com.uyibai.simple.isolation;
 
-import com.uyibai.common.simple.register.ISimpleCallSchema;
-import com.uyibai.common.simple.register.Person;
-import org.apache.servicecomb.provider.pojo.RpcSchema;
+import com.uyibai.common.simple.register.IIsolationCallSchema;
+import org.apache.servicecomb.provider.rest.common.RestSchema;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@RpcSchema(schemaId = "PojoHello")
-public class PojoHello implements ISimpleCallSchema {
+@RestSchema(schemaId = "RestSchemaId")
+@RequestMapping("/")
+public class IsolationCallSchema implements IIsolationCallSchema {
 
-  @Override
-  public String sayHi(String name) {
-    return "Pojo Hello " + name;
-  }
+    @GetMapping(path = "/success")
+    @Override
+    public String callIsolationSuccess() {
+        return "IIsolationCallSchemaId";
+    }
 
-  @Override
-  public String sayHello(Person person) {
-    return "Pojo Hello person " + person.getName();
-  }
+
+    @GetMapping(path = "/error")
+    @Override
+    public String callIsolationError() {
+        throw new IllegalArgumentException("  -- callIsolationError  -- ");
+    }
 }

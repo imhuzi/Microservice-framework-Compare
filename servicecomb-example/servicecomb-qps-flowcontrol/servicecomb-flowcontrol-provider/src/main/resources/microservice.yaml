@@ -1,0 +1,23 @@
+APPLICATION_ID: servicecomb
+service_description:
+  name: flowControlProvider
+  version: 0.0.1
+  environment: development
+servicecomb:
+  service:
+    registry:
+      address: http://127.0.0.1:30100
+  rest:
+    address: 0.0.0.0:8080
+  highway:
+    address: 0.0.0.0:7070
+  handler:
+    chain:
+      Provider:
+        default: qps-flowcontrol-provider
+  flowcontrol:
+    Provider:
+      qps:
+        enabled: true
+        limit:
+          gateway: 1

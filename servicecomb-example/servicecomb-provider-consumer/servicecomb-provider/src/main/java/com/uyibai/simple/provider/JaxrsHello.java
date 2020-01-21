@@ -18,7 +18,7 @@
 package com.uyibai.simple.provider;
 
 
-import com.uyibai.common.simple.register.ICallSchema;
+import com.uyibai.common.simple.register.ISimpleCallSchema;
 import com.uyibai.common.simple.register.Person;
 import org.apache.servicecomb.provider.pojo.RpcSchema;
 
@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 @RpcSchema(schemaId = "JaxrsHello")
 @Path("/jaxrshello")
 @Produces(MediaType.APPLICATION_JSON)
-public class JaxrsHello implements ICallSchema {
+public class JaxrsHello implements ISimpleCallSchema {
 
   @Path("/sayhi")
   @POST

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Call Gateway Servicecomb isolation Server</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div style="display: flex;justify-content: center;align-items: center">
+
+
+    <div style="padding: 100px;">
+        <button style="height: 100px" id="callSuccess">Call Gateway Servicecomb isolation Success Server</button>
+
+        <div>
+            <h1>Success Result</h1>
+            <div id="successResult"></div>
+        </div>
+    </div>
+
+    <div style="padding: 100px;">
+        <button style="height: 100px" id="callError">Call Gateway Servicecomb isolation Error Server</button>
+
+        <div>
+            <h1>Error Result</h1>
+            <div id="errorResult"></div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+</body>
+<script>
+    $("#callSuccess").click(function () {
+        $('#successResult').html("")
+        $.ajax({
+          url: "/isolationProvider/success",
+          type: "GET",
+          success: function (data) {
+            $("#successResult").append(data);
+          },
+          error : function(e) {
+            $("#successResult").append("调用islation 服务 success 接口 出错--:" + e.responseText);
+          },
+        });
+      });
+
+     $("#callError").click(function () {
+        $('#errorResult').html("")
+        $.ajax({
+          url: "/isolationProvider/error",
+          type: "GET",
+          success: function (data) {
+            $("#errorResult").append(data);
+          },
+          error : function(e) {
+            $("#errorResult").append("调用islation 服务 error 接口 出错--:" + e.responseText);
+          },
+        });
+      });
+
+</script>
+</html>

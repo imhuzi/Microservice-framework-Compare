@@ -22,8 +22,13 @@
         <module>servicecomb-common-schema</module>
         <!-- 公共网关服务 -->
         <module>servicecomb-gateway</module>
-        <!--服务调用Demo-->
+        <!-- 服务调用Demo -->
         <module>servicecomb-provider-consumer</module>
+        <!-- 负载均衡Demo -->
+        <module>servicecomb-load-balance</module>
+        <!-- 流量控制Demo -->
+        <module>servicecomb-qps-flowcontrol</module>
+        <module>servicecomb-isolation</module>
     </modules>
 
     <properties>
